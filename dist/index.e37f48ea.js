@@ -2324,9 +2324,8 @@ const getJSON = async function(url) {
         const data = await res.json();
         if (!res.ok) throw new Error(`${data.message} (${res.status})`);
         return data;
-    } catch (err) {
-        throw err;
-    }
+    } catch (err) {}
+    console.log(asd);
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"l60JC":[function(require,module,exports) {
