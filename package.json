@@ -1,0 +1,28 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "recipes application",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgustinSandoval/forkify.git"
+  },
+  "author": "Agustin Sandoval",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AgustinSandoval/forkify/issues"
+  },
+  "homepage": "https://github.com/AgustinSandoval/forkify#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.7.0",
+    "parcel": "^2.7.0"
+  },
+  "dependencies": {
+    "core-js": "^3.25.0",
+    "fractional": "^1.0.0",
+    "regenerator-runtime": "^0.13.9"
+  }
+}
