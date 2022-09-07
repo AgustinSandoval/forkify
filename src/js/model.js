@@ -44,17 +44,29 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
-
-    state.search.results = data.data.recipes.map(rec => {
-      return {
+    // debugger;
+    state.search.results = data.data.recipes.map(async rec => {
+      const dataRec = await AJAX(`${API_URL}/${rec.id}?key=${KEY}`);
+      const { recipe } = dataRec.data;
+      // console.log(recipe);
+      const info = {
         id: rec.id,
         title: rec.title,
         publisher: rec.publisher,
         image: rec.image_url,
+        cookingTime: recipe.cooking_time,
+        ingredientsQuantitiy: recipe.ingredients.length,
         ...(rec.key && { key: rec.key }),
       };
+      // console.log(info);
+      return new Promise((resolve, _) => {
+        // console.log(info);
+        resolve(info);
+      });
     });
+    state.search.results = Promise.all(state.search.results);
     state.search.page = 1;
+    console.log('hola', await state.search.results);
   } catch (err) {
     console.error(`${err} *****`);
     throw err;
@@ -64,6 +76,7 @@ export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = page;
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
+  console.log(state.search.results);
 
   return state.search.results.slice(start, end);
 };

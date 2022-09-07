@@ -23,18 +23,22 @@ class PaginationView extends View {
     //page 1, and there are other pages
     if (currentPage === 1 && numPages > 1) {
       return `
+        <p class="info-pages">page ${currentPage} of ${numPages} </p>
+
         ${this._buttonPagination('next')}
       `;
     }
     //last page
     if (currentPage === numPages && numPages > 1) {
       return `
+        <p class="info-pages">page ${currentPage} of ${numPages} </p>
         ${this._buttonPagination('prev')}
       `;
     }
     //middle page
     if (currentPage < numPages) {
       return `
+        <p class="info-pages">page ${currentPage} of ${numPages} </p>
         ${this._buttonPagination('prev')}
         ${this._buttonPagination('next')}
       `;
