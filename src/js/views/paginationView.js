@@ -1,5 +1,6 @@
 import View from './view.js';
 import icons from 'url:../../img/icons.svg';
+import { sortByTime } from '../model.js';
 
 class PaginationView extends View {
   _parentEl = document.querySelector('.pagination');
@@ -14,18 +15,50 @@ class PaginationView extends View {
       handler(goToPage);
     });
   }
+  _addHandlerClickSort(handler) {
+    this._parentEl.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--sort');
+
+      if (!btn) return;
+
+      let { option } = btn.dataset;
+      console.log(option);
+
+      if (option === 'Time') {
+        option = 'Ingredients';
+        handler('Ingredients');
+      }
+      if (option === 'Ingredients') {
+        option = 'Time';
+
+        handler('Time');
+      }
+
+      handler(option);
+    });
+  }
+
   _generateMarkup() {
+    console.log('informacion de data', this._data);
     const currentPage = this._data.page;
     const numPages = Math.ceil(
       this._data.results.length / this._data.resultsPerPage
     );
-    console.log(numPages);
+    const currentOption = this._data.optionSort;
+    // console.log(this._sortedBy);
     //page 1, and there are other pages
     if (currentPage === 1 && numPages > 1) {
       return `
         <p class="info-pages">page ${currentPage} of ${numPages} </p>
 
         ${this._buttonPagination('next')}
+        <button class="btn--sort pagination__btn--middle" data-option="${
+          currentOption === 'Time' ? 'Time' : 'Ingredients'
+        }">
+          <span> Sort By ${
+            currentOption === 'Time' ? 'Time' : 'Ingredients'
+          }</span> 
+        </button>
       `;
     }
     //last page
@@ -33,6 +66,13 @@ class PaginationView extends View {
       return `
         <p class="info-pages">page ${currentPage} of ${numPages} </p>
         ${this._buttonPagination('prev')}
+        <button class="btn--sort pagination__btn--middle" data-option="${
+          currentOption === 'Time' ? 'Time' : 'Ingredients'
+        }">
+          <span> Sort By ${
+            currentOption === 'Time' ? 'Time' : 'Ingredients'
+          }</span> 
+        </button>
       `;
     }
     //middle page
@@ -41,10 +81,25 @@ class PaginationView extends View {
         <p class="info-pages">page ${currentPage} of ${numPages} </p>
         ${this._buttonPagination('prev')}
         ${this._buttonPagination('next')}
+        <button class="btn--sort pagination__btn--middle" data-option="${
+          currentOption === 'Time' ? 'Time' : 'Ingredients'
+        }">
+          <span> Sort By ${
+            currentOption === 'Time' ? 'Time' : 'Ingredients'
+          }</span> 
+        </button>
       `;
     }
     //page 1, and there are NO other pages
-    return '';
+    return `
+      <button class="btn--sort pagination__btn--middle" data-option="${
+        currentOption === 'Time' ? 'Time' : 'Ingredients'
+      }">
+        <span> Sort By ${
+          currentOption === 'Time' ? 'Time' : 'Ingredients'
+        }</span> 
+      </button>
+    `;
   }
   _buttonPagination(direction) {
     const currentPage = this._data.page;

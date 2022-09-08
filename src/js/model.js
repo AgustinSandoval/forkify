@@ -7,8 +7,10 @@ export const state = {
   search: {
     query: '',
     results: [],
+
     page: 1,
     resultsPerPage: RES_PER_PAGES,
+    optionSort: 'Time',
   },
   bookmarks: [],
 };
@@ -55,7 +57,7 @@ export const loadSearchResults = async function (query) {
         publisher: rec.publisher,
         image: rec.image_url,
         cookingTime: recipe.cooking_time,
-        ingredientsQuantitiy: recipe.ingredients.length,
+        ingredientsQuantity: recipe.ingredients.length,
         ...(rec.key && { key: rec.key }),
       };
       // console.log(info);
@@ -66,19 +68,33 @@ export const loadSearchResults = async function (query) {
     });
     state.search.results = await Promise.all(arrPromises);
     state.search.page = 1;
+
+    // console.log(state.search.results);
   } catch (err) {
     console.error(`${err} *****`);
     throw err;
   }
 };
 
-export const getSearchResultsPage = function (page = state.search.page) {
+export const getSearchResultsPage = function (
+  page = state.search.page,
+  sortOption = state.search.optionSort
+) {
   state.search.page = page;
+  state.search.optionSort = sortOption;
+  console.log('model', state.search.optionSort);
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
-
-  return state.search.results.slice(start, end);
+  if (sortOption === 'Time')
+    return state.search.results
+      .sort((a, b) => a.cookingTime - b.cookingTime)
+      .slice(start, end);
+  if (sortOption === 'Ingredients')
+    return state.search.results
+      .sort((a, b) => a.ingredientsQuantity - b.ingredientsQuantity)
+      .slice(start, end);
 };
+
 export const updateServings = function (newServings) {
   state.recipe.ingredients.forEach(ing => {
     ing.quantity = (ing.quantity * newServings) / state.recipe.servings;

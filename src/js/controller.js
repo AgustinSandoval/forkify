@@ -56,6 +56,11 @@ const controlPagination = function (goToPage) {
 
   paginationView.render(model.state.search);
 };
+const controlSort = function (sortOption) {
+  // debugger;
+  resultsView.render(model.getSearchResultsPage(1, sortOption));
+  paginationView.render(model.state.search);
+};
 const controlServings = function (newServings) {
   model.updateServings(newServings);
 
@@ -101,6 +106,7 @@ const init = function () {
   recipeView.addHAndlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSerchResuls);
   paginationView._addHandlerClick(controlPagination);
+  paginationView._addHandlerClickSort(controlSort);
   addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
