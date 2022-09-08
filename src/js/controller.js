@@ -57,7 +57,6 @@ const controlPagination = function (goToPage) {
   paginationView.render(model.state.search);
 };
 const controlSort = function (sortOption) {
-  // debugger;
   resultsView.render(model.getSearchResultsPage(1, sortOption));
   paginationView.render(model.state.search);
 };

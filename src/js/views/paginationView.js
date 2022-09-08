@@ -27,14 +27,11 @@ class PaginationView extends View {
       if (option === 'Time') {
         option = 'Ingredients';
         handler('Ingredients');
-      }
-      if (option === 'Ingredients') {
+      } else {
         option = 'Time';
 
         handler('Time');
       }
-
-      handler(option);
     });
   }
 
